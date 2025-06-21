@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Multi-language Live Audio Translator</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Custom styles if needed, though Tailwind should cover most */
@@ -28,23 +27,19 @@
             <span class="text-indigo-600">Live</span> <span class="text-purple-600">Audio</span> <span class="text-blue-600">Translator</span>
         </h1>
 
-        <!-- Language Selection -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div class="flex flex-col">
                 <label for="sourceLanguage" class="text-gray-700 text-sm font-semibold mb-2">Source Language:</label>
                 <select id="sourceLanguage" class="p-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 ease-in-out bg-white text-gray-800 shadow-sm">
-                    <!-- Options will be populated by JavaScript -->
-                </select>
+                    </select>
             </div>
             <div class="flex flex-col">
                 <label for="targetLanguage" class="text-gray-700 text-sm font-semibold mb-2">Target Language:</label>
                 <select id="targetLanguage" class="p-3 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 ease-in-out bg-white text-gray-800 shadow-sm">
-                    <!-- Options will be populated by JavaScript -->
-                </select>
+                    </select>
             </div>
         </div>
 
-        <!-- Action Buttons -->
         <div class="flex flex-col sm:flex-row gap-4 mb-6">
             <button id="startSpeakingBtn" class="flex-1 bg-gradient-to-r from-indigo-500 to-blue-600 hover:from-indigo-600 hover:to-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1">
                 🎙️ Start Speaking
@@ -54,14 +49,12 @@
             </button>
         </div>
 
-        <!-- Status and Loader -->
         <div id="statusMessage" class="text-center text-sm mb-4 text-gray-600"></div>
         <div id="loader" class="hidden text-center mb-4">
             <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500 inline-block"></div>
             <span class="ml-2 text-indigo-600">Translating...</span>
         </div>
 
-        <!-- Text Fields -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-inner">
                 <label class="block text-gray-700 text-sm font-semibold mb-2">Original Text:</label>
@@ -179,6 +172,8 @@
                     const translatedText = await translateText(transcript);
                     translatedTextDiv.textContent = translatedText;
                     displayStatus('Translation complete!', 'success');
+                    // Automatically play translation after successful translation
+                    speakTranslatedText(translatedText);
                 } catch (error) {
                     console.error('Translation error:', error);
                     displayStatus('Translation failed. Please try again. Error: ' + error.message, 'error');
