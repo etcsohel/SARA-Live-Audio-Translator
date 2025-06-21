@@ -20,7 +20,7 @@
             max-height: 300px; /* Maximum height for text fields */
             overflow-y: auto; /* Scroll if content overflows */
         }
-        /* Styles for the modal */
+        /* Styles for the modal (removed if no longer needed, but kept for general modal styles if others are added later) */
         .modal {
             display: none; /* Hidden by default */
             position: fixed; /* Stay in place */
@@ -102,12 +102,12 @@
             </button>
         </div>
 
-        <!-- NEW: Gemini API Button -->
-        <div class="mb-6">
+        <!-- Gemini API Button - REMOVED -->
+        <!-- <div class="mb-6">
             <button id="explainTextBtn" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1">
                 ✨ Explain Translated Text
             </button>
-        </div>
+        </div> -->
 
         <!-- Status and Loader -->
         <div id="statusMessage" class="text-center text-sm mb-4 text-gray-600"></div>
@@ -115,11 +115,11 @@
             <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500 inline-block"></div>
             <span class="ml-2 text-indigo-600">Translating...</span>
         </div>
-        <!-- NEW: LLM Loader -->
-        <div id="llmLoader" class="hidden text-center mb-4">
+        <!-- LLM Loader - REMOVED -->
+        <!-- <div id="llmLoader" class="hidden text-center mb-4">
             <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-emerald-500 inline-block"></div>
             <span class="ml-2 text-emerald-600">Getting explanation...</span>
-        </div>
+        </div> -->
 
         <!-- Text Fields -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -134,14 +134,14 @@
         </div>
     </div>
 
-    <!-- NEW: Explanation Modal -->
-    <div id="explanationModal" class="modal hidden">
+    <!-- Explanation Modal - REMOVED -->
+    <!-- <div id="explanationModal" class="modal hidden">
         <div class="modal-content">
             <span class="close-button" id="closeModalBtn">&times;</span>
             <h2 class="text-2xl font-bold text-gray-800 mb-4">Explanation from Gemini</h2>
             <div id="explanationContent" class="text-gray-700 leading-relaxed"></div>
         </div>
-    </div>
+    </div> -->
 
     <script>
         // Ensure webkitSpeechRecognition is available
@@ -152,15 +152,15 @@
         const targetLanguageSelect = document.getElementById('targetLanguage');
         const startSpeakingBtn = document.getElementById('startSpeakingBtn');
         const playTranslationBtn = document.getElementById('playTranslationBtn');
-        const explainTextBtn = document.getElementById('explainTextBtn'); // New button
+        // const explainTextBtn = document.getElementById('explainTextBtn'); // Removed
         const originalTextDiv = document.getElementById('originalText');
         const translatedTextDiv = document.getElementById('translatedText');
         const statusMessageDiv = document.getElementById('statusMessage');
         const loaderDiv = document.getElementById('loader');
-        const llmLoaderDiv = document.getElementById('llmLoader'); // New loader for LLM
-        const explanationModal = document.getElementById('explanationModal'); // New modal
-        const explanationContentDiv = document.getElementById('explanationContent'); // Content area in modal
-        const closeModalBtn = document.getElementById('closeModalBtn'); // Close button for modal
+        // const llmLoaderDiv = document.getElementById('llmLoader'); // Removed
+        // const explanationModal = document.getElementById('explanationModal'); // Removed
+        // const explanationContentDiv = document.getElementById('explanationContent'); // Removed
+        // const closeModalBtn = document.getElementById('closeModalBtn'); // Removed
 
         // Supported Languages (with specific codes for Speech API and LibreTranslate)
         const languages = [
@@ -199,31 +199,6 @@
          */
         function toggleLoader(show) {
             loaderDiv.classList.toggle('hidden', !show);
-        }
-
-        /**
-         * Toggles the visibility of the LLM explanation loader.
-         * @param {boolean} show - True to show, false to hide.
-         */
-        function toggleLlmLoader(show) {
-            llmLoaderDiv.classList.toggle('hidden', !show);
-        }
-
-        /**
-         * Shows the explanation modal.
-         * @param {string} content - The content to display in the modal.
-         */
-        function showExplanationModal(content) {
-            explanationContentDiv.innerHTML = content; // Use innerHTML to render Markdown potentially
-            explanationModal.classList.remove('hidden');
-        }
-
-        /**
-         * Hides the explanation modal.
-         */
-        function hideExplanationModal() {
-            explanationModal.classList.add('hidden');
-            explanationContentDiv.textContent = ''; // Clear content
         }
 
         // --- Initialization ---
@@ -416,64 +391,64 @@
             displayStatus('Playing translation...', 'info');
         }
 
-        // --- NEW: Gemini API Integration for Explanation ---
+        // --- Gemini API Integration for Explanation - REMOVED ---
 
-        /**
-         * Fetches an explanation for the translated text using the Gemini API.
-         * @param {string} translatedText - The text to explain.
-         * @param {string} originalText - The original text for context (optional).
-         * @param {string} sourceLang - The source language name.
-         * @param {string} targetLang - The target language name.
-         */
-        async function getGeminiExplanation(translatedText, originalText, sourceLang, targetLang) {
-            if (!translatedText) {
-                showExplanationModal('No translated text available to explain.');
-                return;
-            }
+        // /**
+        //  * Fetches an explanation for the translated text using the Gemini API.
+        //  * @param {string} translatedText - The text to explain.
+        //  * @param {string} originalText - The original text for context (optional).
+        //  * @param {string} sourceLang - The source language name.
+        //  * @param {string} targetLang - The target language name.
+        //  */
+        // async function getGeminiExplanation(translatedText, originalText, sourceLang, targetLang) {
+        //     if (!translatedText) {
+        //         showExplanationModal('No translated text available to explain.');
+        //         return;
+        //     }
 
-            toggleLlmLoader(true);
-            displayStatus('Getting explanation from Gemini...', 'info');
+        //     toggleLlmLoader(true);
+        //     displayStatus('Getting explanation from Gemini...', 'info');
 
-            const prompt = `Given the original text in ${sourceLang}: "${originalText}" and its translation in ${targetLang}: "${translatedText}", please provide a concise and helpful explanation of the translated text. Focus on any cultural nuances, common idioms, or specific vocabulary that might be helpful to understand its meaning in context. Keep the explanation to a few paragraphs, formatted in Markdown for readability.`;
+        //     const prompt = `Given the original text in ${sourceLang}: "${originalText}" and its translation in ${targetLang}: "${translatedText}", please provide a concise and helpful explanation of the translated text. Focus on any cultural nuances, common idioms, or specific vocabulary that might be helpful to understand its meaning in context. Keep the explanation to a few paragraphs, formatted in Markdown for readability.`;
 
-            try {
-                let chatHistory = [];
-                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-                const payload = { contents: chatHistory };
-                const apiKey = ""; // Canvas will automatically provide the API key here
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+        //     try {
+        //         let chatHistory = [];
+        //         chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+        //         const payload = { contents: chatHistory };
+        //         const apiKey = ""; // Canvas will automatically provide the API key here
+        //         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
+        //         const response = await fetch(apiUrl, {
+        //             method: 'POST',
+        //             headers: { 'Content-Type': 'application/json' },
+        //             body: JSON.stringify(payload)
+        //         });
 
-                if (!response.ok) {
-                    const errorDetails = await response.json();
-                    throw new Error(`Gemini API error: ${response.status} - ${errorDetails.error.message || 'Unknown error'}`);
-                }
+        //         if (!response.ok) {
+        //             const errorDetails = await response.json();
+        //             throw new Error(`Gemini API error: ${response.status} - ${errorDetails.error.message || 'Unknown error'}`);
+        //         }
 
-                const result = await response.json();
+        //         const result = await response.json();
 
-                if (result.candidates && result.candidates.length > 0 &&
-                    result.candidates[0].content && result.candidates[0].content.parts &&
-                    result.candidates[0].content.parts.length > 0) {
-                    const explanation = result.candidates[0].content.parts[0].text;
-                    showExplanationModal(explanation);
-                    displayStatus('Explanation ready!', 'success');
-                } else {
-                    showExplanationModal('Could not retrieve an explanation. The API response was empty or malformed.');
-                    displayStatus('Explanation failed: Empty response.', 'error');
-                }
-            } catch (error) {
-                console.error('Error calling Gemini API for explanation:', error);
-                showExplanationModal(`Failed to get explanation: ${error.message}. Please try again later.`);
-                displayStatus(`Explanation failed: ${error.message}`, 'error');
-            } finally {
-                toggleLlmLoader(false);
-            }
-        }
+        //         if (result.candidates && result.candidates.length > 0 &&
+        //             result.candidates[0].content && result.candidates[0].content.parts &&
+        //             result.candidates[0].content.parts.length > 0) {
+        //             const explanation = result.candidates[0].content.parts[0].text;
+        //             showExplanationModal(explanation);
+        //             displayStatus('Explanation ready!', 'success');
+        //         } else {
+        //             showExplanationModal('Could not retrieve an explanation. The API response was empty or malformed.');
+        //             displayStatus('Explanation failed: Empty response.', 'error');
+        //         }
+        //     } catch (error) {
+        //         console.error('Error calling Gemini API for explanation:', error);
+        //         showExplanationModal(`Failed to get explanation: ${error.message}. Please try again later.`);
+        //         displayStatus(`Explanation failed: ${error.message}`, 'error');
+        //     } finally {
+        //         toggleLlmLoader(false);
+        //     }
+        // }
 
         // --- Event Listeners ---
 
@@ -509,32 +484,32 @@
             }
         });
 
-        // NEW: Event listener for the Explain Text button
-        explainTextBtn.addEventListener('click', () => {
-            const translatedText = translatedTextDiv.textContent;
-            const originalText = originalTextDiv.textContent;
-            // Get the display names for languages to pass to Gemini for better context
-            const sourceLangObj = languages.find(lang => lang.speechCode === sourceLanguageSelect.value);
-            const targetLangObj = languages.find(lang => lang.translateCode === targetLanguageSelect.value);
-            const sourceLangName = sourceLangObj ? sourceLangObj.name.split(' (')[0] : 'unknown language';
-            const targetLangName = targetLangObj ? targetLangObj.name.split(' (')[0] : 'unknown language';
+        // Event listener for the Explain Text button - REMOVED
+        // explainTextBtn.addEventListener('click', () => {
+        //     const translatedText = translatedTextDiv.textContent;
+        //     const originalText = originalTextDiv.textContent;
+        //     // Get the display names for languages to pass to Gemini for better context
+        //     const sourceLangObj = languages.find(lang => lang.speechCode === sourceLanguageSelect.value);
+        //     const targetLangObj = languages.find(lang => lang.translateCode === targetLanguageSelect.value);
+        //     const sourceLangName = sourceLangObj ? sourceLangObj.name.split(' (')[0] : 'unknown language';
+        //     const targetLangName = targetLangObj ? targetLangObj.name.split(' (')[0] : 'unknown language';
 
-            if (translatedText) {
-                getGeminiExplanation(translatedText, originalText, sourceLangName, targetLangName);
-            } else {
-                displayStatus('Please translate some text first before asking for an explanation.', 'info');
-            }
-        });
+        //     if (translatedText) {
+        //         getGeminiExplanation(translatedText, originalText, sourceLangName, targetLangName);
+        //     } else {
+        //         displayStatus('Please translate some text first before asking for an explanation.', 'info');
+        //     }
+        // });
 
-        // Event listener for closing the modal
-        closeModalBtn.addEventListener('click', hideExplanationModal);
+        // Event listener for closing the modal - REMOVED
+        // closeModalBtn.addEventListener('click', hideExplanationModal);
 
-        // Close modal if user clicks outside of it
-        window.addEventListener('click', (event) => {
-            if (event.target === explanationModal) {
-                hideExplanationModal();
-            }
-        });
+        // Close modal if user clicks outside of it - REMOVED
+        // window.addEventListener('click', (event) => {
+        //     if (event.target === explanationModal) {
+        //         hideExplanationModal();
+        //     }
+        // });
 
         // Initialize on page load
         window.onload = () => {
