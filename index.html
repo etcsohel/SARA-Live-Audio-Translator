@@ -278,6 +278,8 @@
                     const translatedText = await translateText(transcript);
                     translatedTextDiv.textContent = translatedText;
                     displayStatus('Translation complete!', 'success');
+                    // Automatically play translation after it's complete
+                    speakTranslatedText(translatedText);
                 } catch (error) {
                     console.error('Translation error:', error);
                     displayStatus('Translation failed. Please try again. Error: ' + error.message, 'error');
@@ -438,7 +440,7 @@
                 let chatHistory = [];
                 chatHistory.push({ role: "user", parts: [{ text: prompt }] });
                 const payload = { contents: chatHistory };
-                const apiKey = ""; // Canvas will automatically provide the API key here
+                const apiKey = "AIzaSyBUkp74PiufhNWc_XLgx_OV-LzK81K7L-U"; // Canvas will automatically provide the API key here
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
                 const response = await fetch(apiUrl, {
