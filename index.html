@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Multi-language Live Audio Translator</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Custom styles if needed, though Tailwind should cover most */
@@ -27,19 +28,23 @@
             <span class="text-indigo-600">Live</span> <span class="text-purple-600">Audio</span> <span class="text-blue-600">Translator</span>
         </h1>
 
+        <!-- Language Selection -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div class="flex flex-col">
                 <label for="sourceLanguage" class="text-gray-700 text-sm font-semibold mb-2">Source Language:</label>
                 <select id="sourceLanguage" class="p-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 ease-in-out bg-white text-gray-800 shadow-sm">
-                    </select>
+                    <!-- Options will be populated by JavaScript -->
+                </select>
             </div>
             <div class="flex flex-col">
                 <label for="targetLanguage" class="text-gray-700 text-sm font-semibold mb-2">Target Language:</label>
                 <select id="targetLanguage" class="p-3 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 ease-in-out bg-white text-gray-800 shadow-sm">
-                    </select>
+                    <!-- Options will be populated by JavaScript -->
+                </select>
             </div>
         </div>
 
+        <!-- Action Buttons -->
         <div class="flex flex-col sm:flex-row gap-4 mb-6">
             <button id="startSpeakingBtn" class="flex-1 bg-gradient-to-r from-indigo-500 to-blue-600 hover:from-indigo-600 hover:to-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1">
                 🎙️ Start Speaking
@@ -49,12 +54,14 @@
             </button>
         </div>
 
+        <!-- Status and Loader -->
         <div id="statusMessage" class="text-center text-sm mb-4 text-gray-600"></div>
         <div id="loader" class="hidden text-center mb-4">
             <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500 inline-block"></div>
             <span class="ml-2 text-indigo-600">Translating...</span>
         </div>
 
+        <!-- Text Fields -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-inner">
                 <label class="block text-gray-700 text-sm font-semibold mb-2">Original Text:</label>
@@ -63,6 +70,8 @@
             <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-inner">
                 <label class="block text-gray-700 text-sm font-semibold mb-2">Translated Text:</label>
                 <div id="translatedText" class="text-content text-gray-800 text-base leading-relaxed"></div>
+                <label class="block text-gray-700 text-sm font-semibold mt-4 mb-2">Pronunciation (English):</label>
+                <div id="pronunciationText" class="text-content text-gray-600 text-sm italic"></div>
             </div>
         </div>
     </div>
@@ -78,6 +87,7 @@
         const playTranslationBtn = document.getElementById('playTranslationBtn');
         const originalTextDiv = document.getElementById('originalText');
         const translatedTextDiv = document.getElementById('translatedText');
+        const pronunciationTextDiv = document.getElementById('pronunciationText'); // New element
         const statusMessageDiv = document.getElementById('statusMessage');
         const loaderDiv = document.getElementById('loader');
 
@@ -172,8 +182,14 @@
                     const translatedText = await translateText(transcript);
                     translatedTextDiv.textContent = translatedText;
                     displayStatus('Translation complete!', 'success');
+                    
                     // Automatically play translation after successful translation
                     speakTranslatedText(translatedText);
+
+                    // Get and display pronunciation guide
+                    const pronunciation = await getPronunciationGuide(translatedText, targetLanguageSelect.value);
+                    pronunciationTextDiv.textContent = pronunciation;
+
                 } catch (error) {
                     console.error('Translation error:', error);
                     displayStatus('Translation failed. Please try again. Error: ' + error.message, 'error');
@@ -232,7 +248,7 @@
                 let chatHistory = [];
                 chatHistory.push({ role: "user", parts: [{ text: prompt }] });
                 const payload = { contents: chatHistory };
-                const apiKey = "AIzaSyBUkp74PiufhNWc_XLgx_OV-LzK81K7L-U"; // Canvas will automatically provide the API key here
+                const apiKey = ""; // Canvas will automatically provide the API key here
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
                 const response = await fetch(apiUrl, {
@@ -262,6 +278,59 @@
             }
         }
 
+        // --- Pronunciation Guide Function (using Gemini API) ---
+        /**
+         * Gets an English pronunciation guide for the given text in the target language.
+         * @param {string} text - The text to get pronunciation for.
+         * @param {string} targetTranslateCode - The LibreTranslate code of the target language.
+         * @returns {Promise<string>} - A promise that resolves with the pronunciation guide.
+         */
+        async function getPronunciationGuide(text, targetTranslateCode) {
+            const targetLangObj = languages.find(lang => lang.translateCode === targetTranslateCode);
+
+            if (!targetLangObj) {
+                return "Pronunciation guide not available for this language.";
+            }
+
+            const targetLangName = targetLangObj.name.split(' (')[0]; // e.g., "Hindi"
+
+            const prompt = `Provide a simple, easy-to-read English pronunciation guide (using common English letters, not IPA symbols) for the following ${targetLangName} text: "${text}". Only provide the pronunciation guide.`;
+
+            try {
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                const payload = { contents: chatHistory };
+                const apiKey = "AIzaSyBUkp74PiufhNWc_XLgx_OV-LzK81K7L-U"; // Canvas will automatically provide the API key here
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorDetails = await response.json();
+                    console.error('Gemini API Pronunciation Error Response:', errorDetails);
+                    throw new Error(`Gemini API error: Status ${response.status} - ${errorDetails.error?.message || 'Unknown error'}`);
+                }
+
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    return result.candidates[0].content.parts[0].text;
+                } else {
+                    return "Pronunciation guide not available."; // Fallback message
+                }
+            } catch (error) {
+                console.error('Error during Gemini API pronunciation guide generation:', error);
+                return `Failed to get pronunciation: ${error.message}`;
+            }
+        }
+
+
         // --- Text-to-Speech Function ---
 
         /**
@@ -279,10 +348,6 @@
             }
 
             const utterance = new SpeechSynthesisUtterance(text);
-            // SpeechSynthesisUtterance expects language codes like 'en-US', 'hi-IN'.
-            // We need to convert the 'translateCode' (e.g., 'hi') back to a speechCode format if different.
-            // For now, using targetLanguageSelect.value which is the translateCode,
-            // but for best results, we should ensure the voice matches.
             const selectedLang = languages.find(lang => lang.translateCode === targetLanguageSelect.value);
             if (selectedLang) {
                  utterance.lang = selectedLang.speechCode; // Use the speechCode for synthesis
@@ -290,9 +355,7 @@
                  utterance.lang = targetLanguageSelect.value; // Fallback to translateCode if speechCode not found
             }
 
-
             // Ensure a voice is available for the selected language
-            // Get voices only after they have been loaded
             const voices = speechSynthesis.getVoices();
             const selectedVoice = voices.find(voice => voice.lang === utterance.lang || voice.lang.startsWith(utterance.lang.split('-')[0]));
             if (selectedVoice) {
@@ -324,6 +387,7 @@
                     recognition.lang = sourceLanguageSelect.value;
                     originalTextDiv.textContent = '';
                     translatedTextDiv.textContent = '';
+                    pronunciationTextDiv.textContent = ''; // Clear pronunciation text
                     recognition.start();
                     isListening = true;
                     startSpeakingBtn.textContent = '🛑 Stop Speaking';
@@ -343,6 +407,39 @@
                 displayStatus('No translated text available to play.', 'info');
             }
         });
+
+        // Event listener for target language change
+        targetLanguageSelect.addEventListener('change', async () => {
+            const currentOriginalText = originalTextDiv.textContent.trim();
+            if (currentOriginalText) {
+                displayStatus('Language changed. Re-translating...', 'info');
+                toggleLoader(true);
+                translatedTextDiv.textContent = ''; // Clear previous translation
+                pronunciationTextDiv.textContent = ''; // Clear previous pronunciation
+
+                try {
+                    const translatedText = await translateText(currentOriginalText);
+                    translatedTextDiv.textContent = translatedText;
+                    displayStatus('Re-translation complete!', 'success');
+                    speakTranslatedText(translatedText);
+
+                    // Get and display pronunciation guide for re-translated text
+                    const pronunciation = await getPronunciationGuide(translatedText, targetLanguageSelect.value);
+                    pronunciationTextDiv.textContent = pronunciation;
+
+                } catch (error) {
+                    console.error('Re-translation error:', error);
+                    displayStatus('Re-translation failed. Please try again. Error: ' + error.message, 'error');
+                } finally {
+                    toggleLoader(false);
+                }
+            } else {
+                displayStatus('No original text to re-translate.', 'info');
+                translatedTextDiv.textContent = ''; // Clear previous translation if any
+                pronunciationTextDiv.textContent = ''; // Clear previous pronunciation if any
+            }
+        });
+
 
         // Initialize on page load
         window.onload = () => {
