@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-language Live Audio Translator</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles if needed, though Tailwind should cover most */
+        body {
+            font-family: 'Inter', sans-serif; /* Using Inter font as per instructions */
+            background-color: #f0f4f8; /* Light gray background */
+        }
+        /* Style for the text areas to prevent overflow */
+        .text-content {
+            white-space: pre-wrap; /* Preserve whitespace and wrap text */
+            word-wrap: break-word; /* Break long words */
+            min-height: 120px; /* Minimum height for text fields */
+            max-height: 300px; /* Maximum height for text fields */
+            overflow-y: auto; /* Scroll if content overflows */
+        }
+        /* Styles for the modal */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+            max-width: 80%;
+            max-height: 80%;
+            overflow-y: auto;
+            position: relative;
+            animation: fadeIn 0.3s ease-out;
+        }
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-2xl border border-gray-200">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">
+            <span class="text-indigo-600">Live</span> <span class="text-purple-600">Audio</span> <span class="text-blue-600">Translator</span>
+        </h1>
+
+        <!-- Language Selection -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div class="flex flex-col">
+                <label for="sourceLanguage" class="text-gray-700 text-sm font-semibold mb-2">Source Language:</label>
+                <select id="sourceLanguage" class="p-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 ease-in-out bg-white text-gray-800 shadow-sm">
+                    <!-- Options will be populated by JavaScript -->
+                </select>
+            </div>
+            <div class="flex flex-col">
+                <label for="targetLanguage" class="text-gray-700 text-sm font-semibold mb-2">Target Language:</label>
+                <select id="targetLanguage" class="p-3 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 ease-in-out bg-white text-gray-800 shadow-sm">
+                    <!-- Options will be populated by JavaScript -->
+                </select>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 mb-6">
+            <button id="startSpeakingBtn" class="flex-1 bg-gradient-to-r from-indigo-500 to-blue-600 hover:from-indigo-600 hover:to-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1">
+                🎙️ Start Speaking
+            </button>
+            <button id="playTranslationBtn" class="flex-1 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1">
+                🔊 Play Translation
+            </button>
+        </div>
+
+        <!-- NEW: Gemini API Button -->
+        <div class="mb-6">
+            <button id="explainTextBtn" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1">
+                ✨ Explain Translated Text
+            </button>
+        </div>
+
+        <!-- Status and Loader -->
+        <div id="statusMessage" class="text-center text-sm mb-4 text-gray-600"></div>
+        <div id="loader" class="hidden text-center mb-4">
+            <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500 inline-block"></div>
+            <span class="ml-2 text-indigo-600">Translating...</span>
+        </div>
+        <!-- NEW: LLM Loader -->
+        <div id="llmLoader" class="hidden text-center mb-4">
+            <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-emerald-500 inline-block"></div>
+            <span class="ml-2 text-emerald-600">Getting explanation...</span>
+        </div>
+
+        <!-- Text Fields -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-inner">
+                <label class="block text-gray-700 text-sm font-semibold mb-2">Original Text:</label>
+                <div id="originalText" class="text-content text-gray-800 text-base leading-relaxed"></div>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-inner">
+                <label class="block text-gray-700 text-sm font-semibold mb-2">Translated Text:</label>
+                <div id="translatedText" class="text-content text-gray-800 text-base leading-relaxed"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW: Explanation Modal -->
+    <div id="explanationModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-button" id="closeModalBtn">&times;</span>
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Explanation from Gemini</h2>
+            <div id="explanationContent" class="text-gray-700 leading-relaxed"></div>
+        </div>
+    </div>
+
+    <script>
+        // Ensure webkitSpeechRecognition is available
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+        // UI Element References
+        const sourceLanguageSelect = document.getElementById('sourceLanguage');
+        const targetLanguageSelect = document.getElementById('targetLanguage');
+        const startSpeakingBtn = document.getElementById('startSpeakingBtn');
+        const playTranslationBtn = document.getElementById('playTranslationBtn');
+        const explainTextBtn = document.getElementById('explainTextBtn'); // New button
+        const originalTextDiv = document.getElementById('originalText');
+        const translatedTextDiv = document.getElementById('translatedText');
+        const statusMessageDiv = document.getElementById('statusMessage');
+        const loaderDiv = document.getElementById('loader');
+        const llmLoaderDiv = document.getElementById('llmLoader'); // New loader for LLM
+        const explanationModal = document.getElementById('explanationModal'); // New modal
+        const explanationContentDiv = document.getElementById('explanationContent'); // Content area in modal
+        const closeModalBtn = document.getElementById('closeModalBtn'); // Close button for modal
+
+        // Supported Languages (with specific codes for Speech API and LibreTranslate)
+        const languages = [
+            { name: 'Bengali (India)', speechCode: 'bn-IN', translateCode: 'bn' },
+            { name: 'Tamil (India)', speechCode: 'ta-IN', translateCode: 'ta' },
+            { name: 'Hindi (India)', speechCode: 'hi-IN', translateCode: 'hi' },
+            { name: 'English (US)', speechCode: 'en-US', translateCode: 'en' },
+            { name: 'Telugu (India)', speechCode: 'te-IN', translateCode: 'te' },
+            { name: 'Kannada (India)', speechCode: 'kn-IN', translateCode: 'kn' },
+            { name: 'Malayalam (India)', speechCode: 'ml-IN', translateCode: 'ml' },
+            { name: 'Urdu (India)', speechCode: 'ur-IN', translateCode: 'ur' }
+        ];
+
+        let recognition; // SpeechRecognition instance
+        let isListening = false; // Flag to track microphone status
+
+        // --- Helper Functions ---
+
+        /**
+         * Displays a status message to the user.
+         * @param {string} message - The message to display.
+         * @param {string} type - Optional: 'error', 'success', 'info'. Defaults to 'info'.
+         */
+        function displayStatus(message, type = 'info') {
+            statusMessageDiv.textContent = message;
+            statusMessageDiv.className = `text-center text-sm mb-4 ${
+                type === 'error' ? 'text-red-600' :
+                type === 'success' ? 'text-green-600' :
+                'text-gray-600'
+            }`;
+        }
+
+        /**
+         * Toggles the visibility of the main translation loader.
+         * @param {boolean} show - True to show, false to hide.
+         */
+        function toggleLoader(show) {
+            loaderDiv.classList.toggle('hidden', !show);
+        }
+
+        /**
+         * Toggles the visibility of the LLM explanation loader.
+         * @param {boolean} show - True to show, false to hide.
+         */
+        function toggleLlmLoader(show) {
+            llmLoaderDiv.classList.toggle('hidden', !show);
+        }
+
+        /**
+         * Shows the explanation modal.
+         * @param {string} content - The content to display in the modal.
+         */
+        function showExplanationModal(content) {
+            explanationContentDiv.innerHTML = content; // Use innerHTML to render Markdown potentially
+            explanationModal.classList.remove('hidden');
+        }
+
+        /**
+         * Hides the explanation modal.
+         */
+        function hideExplanationModal() {
+            explanationModal.classList.add('hidden');
+            explanationContentDiv.textContent = ''; // Clear content
+        }
+
+        // --- Initialization ---
+
+        /**
+         * Populates the language dropdowns with options.
+         */
+        function populateLanguageDropdowns() {
+            languages.forEach(lang => {
+                const sourceOption = document.createElement('option');
+                sourceOption.value = lang.speechCode; // Use speechCode for source dropdown value
+                sourceOption.textContent = lang.name;
+                sourceLanguageSelect.appendChild(sourceOption);
+
+                const targetOption = document.createElement('option');
+                targetOption.value = lang.translateCode; // Use translateCode for target dropdown value (for LibreTranslate)
+                targetOption.textContent = lang.name;
+                targetLanguageSelect.appendChild(targetOption);
+            });
+
+            // Set default selections
+            sourceLanguageSelect.value = 'en-US';
+            targetLanguageSelect.value = 'hi'; // Default target to Hindi
+        }
+
+        /**
+         * Initializes the SpeechRecognition API.
+         */
+        function initializeSpeechRecognition() {
+            if (!SpeechRecognition) {
+                displayStatus('Speech recognition not supported in this browser.', 'error');
+                startSpeakingBtn.disabled = true;
+                return;
+            }
+
+            recognition = new SpeechRecognition();
+            recognition.continuous = false; // Set to true for continuous listening
+            recognition.interimResults = false; // Get final results only
+
+            // Event handler when speech is recognized
+            recognition.onresult = async (event) => {
+                const transcript = Array.from(event.results)
+                    .map(result => result[0])
+                    .map(result => result.transcript)
+                    .join('');
+
+                originalTextDiv.textContent = transcript;
+                displayStatus('Speech recognized. Translating...', 'info');
+                toggleLoader(true);
+
+                try {
+                    const translatedText = await translateText(transcript);
+                    translatedTextDiv.textContent = translatedText;
+                    displayStatus('Translation complete!', 'success');
+                    // Automatically play translation after it's complete
+                    speakTranslatedText(translatedText);
+                } catch (error) {
+                    console.error('Translation error:', error);
+                    displayStatus('Translation failed. Please try again. Error: ' + error.message, 'error');
+                } finally {
+                    toggleLoader(false);
+                }
+            };
+
+            // Event handler for errors
+            recognition.onerror = (event) => {
+                console.error('Speech recognition error:', event.error);
+                let errorMessage = `Speech recognition error: ${event.error}`;
+                if (event.error === 'not-allowed') {
+                    errorMessage = 'Microphone access denied. Please allow microphone permissions in your browser settings.';
+                } else if (event.error === 'no-speech') {
+                    errorMessage = 'No speech detected. Please speak clearly.';
+                }
+                displayStatus(errorMessage, 'error');
+                isListening = false;
+                startSpeakingBtn.textContent = '🎙️ Start Speaking';
+            };
+
+            // Event handler when recognition ends
+            recognition.onend = () => {
+                if (isListening) { // If it ended naturally, but we want continuous
+                    // We could restart here if continuous was true and we wanted to always listen
+                } else {
+                    displayStatus('Stopped listening.', 'info');
+                }
+                isListening = false;
+                startSpeakingBtn.textContent = '🎙️ Start Speaking';
+            };
+        }
+
+        // --- Translation Function (using Gemini API) ---
+
+        /**
+         * Translates text using the Gemini API.
+         * @param {string} text - The text to translate.
+         * @returns {Promise<string>} - A promise that resolves with the translated text.
+         */
+        async function translateText(text) {
+            const sourceLangObj = languages.find(lang => lang.speechCode === sourceLanguageSelect.value);
+            const targetLangObj = languages.find(lang => lang.translateCode === targetLanguageSelect.value);
+
+            if (!sourceLangObj || !targetLangObj) {
+                throw new Error("Invalid source or target language selected.");
+            }
+
+            const sourceLangName = sourceLangObj.name.split(' (')[0]; // e.g., "Bengali" from "Bengali (India)"
+            const targetLangName = targetLangObj.name.split(' (')[0]; // e.g., "Tamil" from "Tamil (India)"
+
+            const prompt = `Translate the following text from ${sourceLangName} to ${targetLangName}: "${text}". Provide only the translated text, without any additional notes or conversational filler.`;
+
+            try {
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                const payload = { contents: chatHistory };
+                const apiKey = ""; // Canvas will automatically provide the API key here
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorDetails = await response.json();
+                    console.error('Gemini API Translation Error Response:', errorDetails);
+                    throw new Error(`Gemini API error: Status ${response.status} - ${errorDetails.error?.message || 'Unknown error'}`);
+                }
+
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    return result.candidates[0].content.parts[0].text;
+                } else {
+                    throw new Error('Gemini API returned an empty or malformed response for translation.');
+                }
+            } catch (error) {
+                console.error('Error during Gemini API translation:', error);
+                throw new Error(`Translation failed via Gemini API: ${error.message}`);
+            }
+        }
+
+        // --- Text-to-Speech Function ---
+
+        /**
+         * Speaks the provided text using SpeechSynthesis API.
+         * @param {string} text - The text to speak.
+         */
+        function speakTranslatedText(text) {
+            if (!text) {
+                displayStatus('No translated text to play.', 'info');
+                return;
+            }
+            if (!'speechSynthesis' in window) {
+                displayStatus('Text-to-speech not supported in this browser.', 'error');
+                return;
+            }
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            // SpeechSynthesisUtterance expects language codes like 'en-US', 'hi-IN'.
+            // We need to convert the 'translateCode' (e.g., 'hi') back to a speechCode format if different.
+            // For now, using targetLanguageSelect.value which is the translateCode,
+            // but for best results, we should ensure the voice matches.
+            const selectedLang = languages.find(lang => lang.translateCode === targetLanguageSelect.value);
+            if (selectedLang) {
+                 utterance.lang = selectedLang.speechCode; // Use the speechCode for synthesis
+            } else {
+                 utterance.lang = targetLanguageSelect.value; // Fallback to translateCode if speechCode not found
+            }
+
+
+            // Ensure a voice is available for the selected language
+            // Get voices only after they have been loaded
+            const voices = speechSynthesis.getVoices();
+            const selectedVoice = voices.find(voice => voice.lang === utterance.lang || voice.lang.startsWith(utterance.lang.split('-')[0]));
+            if (selectedVoice) {
+                utterance.voice = selectedVoice;
+            } else {
+                console.warn(`No specific voice found for ${utterance.lang}, using default.`);
+            }
+
+            utterance.onerror = (event) => {
+                console.error('Speech synthesis error:', event.error);
+                displayStatus(`Failed to play audio: ${event.error}`, 'error');
+            };
+
+            speechSynthesis.speak(utterance);
+            displayStatus('Playing translation...', 'info');
+        }
+
+        // --- NEW: Gemini API Integration for Explanation ---
+
+        /**
+         * Fetches an explanation for the translated text using the Gemini API.
+         * @param {string} translatedText - The text to explain.
+         * @param {string} originalText - The original text for context (optional).
+         * @param {string} sourceLang - The source language name.
+         * @param {string} targetLang - The target language name.
+         */
+        async function getGeminiExplanation(translatedText, originalText, sourceLang, targetLang) {
+            if (!translatedText) {
+                showExplanationModal('No translated text available to explain.');
+                return;
+            }
+
+            toggleLlmLoader(true);
+            displayStatus('Getting explanation from Gemini...', 'info');
+
+            const prompt = `Given the original text in ${sourceLang}: "${originalText}" and its translation in ${targetLang}: "${translatedText}", please provide a concise and helpful explanation of the translated text. Focus on any cultural nuances, common idioms, or specific vocabulary that might be helpful to understand its meaning in context. Keep the explanation to a few paragraphs, formatted in Markdown for readability.`;
+
+            try {
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                const payload = { contents: chatHistory };
+                const apiKey = ""; // Canvas will automatically provide the API key here
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorDetails = await response.json();
+                    throw new Error(`Gemini API error: ${response.status} - ${errorDetails.error.message || 'Unknown error'}`);
+                }
+
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const explanation = result.candidates[0].content.parts[0].text;
+                    showExplanationModal(explanation);
+                    displayStatus('Explanation ready!', 'success');
+                } else {
+                    showExplanationModal('Could not retrieve an explanation. The API response was empty or malformed.');
+                    displayStatus('Explanation failed: Empty response.', 'error');
+                }
+            } catch (error) {
+                console.error('Error calling Gemini API for explanation:', error);
+                showExplanationModal(`Failed to get explanation: ${error.message}. Please try again later.`);
+                displayStatus(`Explanation failed: ${error.message}`, 'error');
+            } finally {
+                toggleLlmLoader(false);
+            }
+        }
+
+        // --- Event Listeners ---
+
+        startSpeakingBtn.addEventListener('click', () => {
+            if (isListening) {
+                recognition.stop();
+                isListening = false;
+                startSpeakingBtn.textContent = '🎙️ Start Speaking';
+                displayStatus('Stopped listening.', 'info');
+            } else {
+                try {
+                    // Update the recognition language based on selected source
+                    recognition.lang = sourceLanguageSelect.value;
+                    originalTextDiv.textContent = '';
+                    translatedTextDiv.textContent = '';
+                    displayStatus('Listening... Speak now.', 'info');
+                    recognition.start();
+                    isListening = true;
+                    startSpeakingBtn.textContent = '🛑 Stop Speaking';
+                } catch (error) {
+                    console.error('Error starting recognition:', error);
+                    displayStatus('Failed to start microphone. Please ensure permissions are granted and try reloading if necessary.', 'error');
+                }
+            }
+        });
+
+        playTranslationBtn.addEventListener('click', () => {
+            const translatedText = translatedTextDiv.textContent;
+            if (translatedText) {
+                speakTranslatedText(translatedText);
+            } else {
+                displayStatus('No translated text available to play.', 'info');
+            }
+        });
+
+        // NEW: Event listener for the Explain Text button
+        explainTextBtn.addEventListener('click', () => {
+            const translatedText = translatedTextDiv.textContent;
+            const originalText = originalTextDiv.textContent;
+            // Get the display names for languages to pass to Gemini for better context
+            const sourceLangObj = languages.find(lang => lang.speechCode === sourceLanguageSelect.value);
+            const targetLangObj = languages.find(lang => lang.translateCode === targetLanguageSelect.value);
+            const sourceLangName = sourceLangObj ? sourceLangObj.name.split(' (')[0] : 'unknown language';
+            const targetLangName = targetLangObj ? targetLangObj.name.split(' (')[0] : 'unknown language';
+
+            if (translatedText) {
+                getGeminiExplanation(translatedText, originalText, sourceLangName, targetLangName);
+            } else {
+                displayStatus('Please translate some text first before asking for an explanation.', 'info');
+            }
+        });
+
+        // Event listener for closing the modal
+        closeModalBtn.addEventListener('click', hideExplanationModal);
+
+        // Close modal if user clicks outside of it
+        window.addEventListener('click', (event) => {
+            if (event.target === explanationModal) {
+                hideExplanationModal();
+            }
+        });
+
+        // Initialize on page load
+        window.onload = () => {
+            populateLanguageDropdowns();
+            initializeSpeechRecognition();
+            displayStatus('Select languages and click "Start Speaking".');
+
+            // Force load voices for SpeechSynthesis (sometimes they aren't ready immediately)
+            if ('speechSynthesis' in window) {
+                speechSynthesis.onvoiceschanged = () => {
+                    console.log('Voices loaded.');
+                    // You can optionally check for voice availability here.
+                };
+                // Call getVoices to prompt the browser to load them if they're not already
+                speechSynthesis.getVoices();
+            }
+        };
+
+    </script>
+</body>
+</html>
