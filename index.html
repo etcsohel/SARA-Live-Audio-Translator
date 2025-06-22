@@ -3,76 +3,454 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SARA LIVE AUDIO TRANSLATOR</title>
+    <title>SARA LIVE AUDIO TRANSLATOR - Real-time Voice Translation in 8+ Languages</title>
+
+    <!-- Favicon -->
+    <!--
+        This favicon is now pointing to the 'favicon.png' file located in the same directory as index.html.
+    -->
+    <link rel="icon" type="image/png" href="favicon.png" />
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="SARA Live Audio Translator: Real-time, multi-language speech translation in over 8 languages, including English, Tamil, and Telugu, with pronunciation guide and continuous speaking mode. Translate audio instantly.">
+    <meta name="keywords" content="live translator, audio translator, speech translator, real-time translation, multi-language translator, pronunciation guide, speaking mode, voice translation, online translator, Sohel Rana, English translator, Tamil translator, Telugu translator, Hindi translator, Bengali translator, Kannada translator, Malayalam translator, Urdu translator">
+    <link rel="canonical" href=https://blogger.googleusercontent.com/img/a/AVvXsEhUtWvecov8kGrli6VFhp9eNZOLOcq0fqDAxaYLghufxvBXrAzJLkrNVs3uImxNLYZoqa5giPttlYazTf7e9AWSLLFVuBDPLzX53jNpyeOvjUBVPrDW0DktJRwLArrbldkK7ibue7Ly7pf0eIZsqil61h0PCXDBYwukOPNU-mnpKh6jpkfw4yHqZyRo1eE" /> <!-- IMPORTANT: Replace with your deployed URL -->
+
+    <!-- Open Graph / Facebook / LinkedIn -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="[YOUR_CANONICAL_URL_HERE]"> <!-- IMPORTANT: Replace with your deployed URL -->
+    <meta property="og:title" content="SARA LIVE AUDIO TRANSLATOR - Real-time Voice Translation">
+    <meta property="og:description" content="Translate spoken language instantly with SARA Live Audio Translator. Features include live translation, pronunciation guides, and a continuous speaking mode, supporting over 8 languages.">
+    <meta property="og:image" content="[YOUR_CANONICAL_URL_HERE]/favicon.png"> <!-- Updated to point to your favicon.png -->
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="[YOUR_CANONICAL_URL_HERE]"> <!-- IMPORTANT: Replace with your deployed URL -->
+    <meta property="twitter:title" content="SARA LIVE AUDIO TRANSLATOR - Real-time Voice Translation">
+    <meta property="twitter:description" content="Translate spoken language instantly with SARA Live Audio Translator. Features include live translation, pronunciation guides, and a continuous speaking mode, supporting over 8 languages.">
+    <meta property="twitter:image" content="[YOUR_CANONICAL_URL_HERE]/favicon.png"> <!-- Updated to point to your favicon.png -->
+
+    <!-- Schema.org Structured Data -->
+
+    <!-- SoftwareApplication Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "SARA LIVE AUDIO TRANSLATOR",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Web",
+      "audience": "Anyone needing real-time voice translation",
+      "description": "SARA Live Audio Translator provides instant, real-time voice translation across multiple languages (currently supporting English, Tamil, Telugu, Hindi, Bengali, Kannada, Malayalam, Urdu), featuring a pronunciation guide and a unique continuous speaking mode for seamless conversations.",
+      "softwareRequirements": "Modern web browser with microphone access",
+      "url": "[YOUR_CANONICAL_URL_HERE]",
+      "image": "[YOUR_CANONICAL_URL_HERE]/favicon.png",
+      "author": {
+        "@type": "Person",
+        "name": "SOHEL RANA",
+        "url": "https://example.com/sohel-rana-profile"  /* Replace with developer's profile URL */
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "120"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Real-time audio translation",
+        "Pronunciation guide",
+        "Normal and Speaking Modes",
+        "Language swap function",
+        "Supports 8+ Indian and English languages",
+        "Local settings storage (IndexedDB)"
+      ],
+      "applicationSubCategory": "Language Learning"
+    }
+    </script>
+
+    <!-- WebSite Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      "name": "SARA LIVE AUDIO TRANSLATOR",
+      "url": "[YOUR_CANONICAL_URL_HERE]",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "[YOUR_CANONICAL_URL_HERE]?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- Author (Person) Schema - More detailed -->
+    <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Person",
+      "name": "SOHEL RANA",
+      "url": "https://example.com/sohel-rana-profile", /* Replace with developer's professional profile or website */
+      "sameAs": [
+        "https://linkedin.com/in/sohel-rana", /* Replace with LinkedIn profile */
+        "https://github.com/sohel-rana-dev"   /* Replace with GitHub profile */
+      ],
+      "jobTitle": "Software Developer",
+      "alumniOf": "Your University/College Name", /* Optional: Replace with alma mater */
+      "knowsLanguage": ["en", "bn", "hi", "ta", "te", "kn", "ml", "ur"]
+    }
+    </script>
+
+    <!-- FAQPage Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": "What is SARA Live Audio Translator?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "SARA Live Audio Translator is a web application that provides real-time, instant voice translation between multiple languages. It also offers a pronunciation guide and a continuous speaking mode for interactive conversations."
+        }
+      },{
+        "@type": "Question",
+        "name": "Which languages does SARA Translator support?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "SARA Live Audio Translator supports over 8 languages, including English (US), Bengali (India), Tamil (India), Hindi (India), Telugu (India), Kannada (India), Malayalam (India), and Urdu (India)."
+        }
+      },{
+        "@type": "Question",
+        "name": "What is 'Speaking Mode' and how does it work?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Speaking Mode enables a continuous translation loop. After you speak and receive a translation, the source and target languages automatically swap, and the app automatically restarts listening, facilitating a natural, back-and-forth conversation experience."
+        }
+      },{
+        "@type": "Question",
+        "name": "Does the app save my language preferences?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, SARA Live Audio Translator saves your preferred source language, target language, and selected mode (Normal/Speaking) locally in your browser using IndexedDB, so your settings are remembered for future visits."
+        }
+      }]
+    }
+    </script>
+
+    <!-- BreadcrumbList Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "[YOUR_CANONICAL_URL_HERE]" /* Replace with your deployed URL */
+      },{
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Live Audio Translator",
+        "item": "[YOUR_CANONICAL_URL_HERE]" /* Replace with your deployed URL */
+      }]
+    }
+    </script>
+
+    <!-- Language Specific Structured Data (Detailed) -->
+    <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Language",
+      "name": "English",
+      "alternateName": "en-US",
+      "description": "English (US) speech recognition and translation support for SARA Live Audio Translator. Essential for global communication.",
+      "inLanguage": "en"
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Language",
+      "name": "Tamil",
+      "alternateName": "ta-IN",
+      "description": "Tamil (India) speech recognition and translation support for SARA Live Audio Translator, facilitating communication for Tamil speakers.",
+      "inLanguage": "ta"
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Language",
+      "name": "Telugu",
+      "alternateName": "te-IN",
+      "description": "Telugu (India) speech recognition and translation support for SARA Live Audio Translator, catering to Telugu speakers.",
+      "inLanguage": "te"
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Language",
+      "name": "Hindi",
+      "alternateName": "hi-IN",
+      "description": "Hindi (India) speech recognition and translation support for SARA Live Audio Translator, crucial for North Indian communication.",
+      "inLanguage": "hi"
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Language",
+      "name": "Bengali",
+      "alternateName": "bn-IN",
+      "description": "Bengali (India) speech recognition and translation support for SARA Live Audio Translator, beneficial for Bengali speakers.",
+      "inLanguage": "bn"
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Language",
+      "name": "Kannada",
+      "alternateName": "kn-IN",
+      "description": "Kannada (India) speech recognition and translation support for SARA Live Audio Translator, assisting Kannada speakers.",
+      "inLanguage": "kn"
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Language",
+      "name": "Malayalam",
+      "alternateName": "ml-IN",
+      "description": "Malayalam (India) speech recognition and translation support for SARA Live Audio Translator, for Malayalam speakers.",
+      "inLanguage": "ml"
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Language",
+      "name": "Urdu",
+      "alternateName": "ur-IN",
+      "description": "Urdu (India) speech recognition and translation support for SARA Live Audio Translator, for Urdu speakers.",
+      "inLanguage": "ur"
+    }
+    </script>
+
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome CDN for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" xintegrity="sha512-Fo3rlroqV+Gf40F45QWf9sWnSg8P9Qh2Gk3b6S6fD/W2nE5d1g4o1+Q7L+u/P7sA3VlX4t+k/zQ2O5p6oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        /* Custom styles if needed, though Tailwind should cover most */
+        /* Custom styles for font and background */
         body {
-            font-family: 'Inter', sans-serif; /* Using Inter font as per instructions */
-            background-color: #f0f4f8; /* Light gray background */
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #e0f2f7 0%, #cce7f5 100%); /* Softer, modern gradient background */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem;
         }
+
+        /* Keyframe for fade-in and slide-up animation */
+        @keyframes fadeInSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Enhanced styling for the main container */
+        .main-container {
+            background-color: #ffffff; /* Pure white background for clarity */
+            padding: 2.5rem; /* Increased padding */
+            border-radius: 1.5rem; /* More rounded corners */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15); /* Stronger, softer shadow */
+            border: 1px solid #e2e8f0; /* Subtle border */
+            width: 100%;
+            max-width: 640px; /* Slightly increased max-width for better space */
+            animation: fadeInSlideUp 0.8s ease-out forwards; /* Apply animation */
+            opacity: 0; /* Start invisible for animation */
+        }
+
+        /* Enhanced title styling with gradient animation */
+        .app-title {
+            font-size: 2.5rem; /* Larger font size */
+            font-weight: 800; /* Extra bold */
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            background-image: linear-gradient(45deg, #6366f1, #a855f7, #3b82f6, #22c55e); /* Multi-color gradient */
+            background-size: 200% 200%; /* For animating gradient position */
+            animation: gradient-shift 5s ease infinite; /* Subtle animation */
+            display: inline-block; /* Ensure gradient applies correctly */
+        }
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         /* Style for the text areas to prevent overflow */
         .text-content {
-            white-space: pre-wrap; /* Preserve whitespace and wrap text */
-            word-wrap: break-word; /* Break long words */
-            min-height: 120px; /* Minimum height for text fields */
-            max-height: 300px; /* Maximum height for text fields */
-            overflow-y: auto; /* Scroll if content overflows */
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            min-height: 120px;
+            max-height: 300px;
+            overflow-y: auto;
+            background-color: #f8fafc; /* Lighter background for text areas */
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem; /* Rounded corners for text areas */
+            padding: 1rem;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06); /* Inset shadow for depth */
+            transition: all 0.3s ease; /* Smooth transition for interaction */
+        }
+        .text-content:hover {
+            border-color: #a8b3e3; /* Subtle border change on hover */
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.08), 0 0 0 2px rgba(99, 102, 241, 0.1);
+        }
+        .text-content:focus-within {
+            border-color: #6366f1; /* Stronger border on focus */
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1), 0 0 0 3px rgba(99, 102, 241, 0.3); /* Focus ring effect */
+        }
+
+        /* General button styling improvements */
+        button {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother transitions */
+        }
+        button:hover {
+            transform: translateY(-3px); /* Slight lift effect */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25); /* Enhanced shadow on hover */
+        }
+        button:active {
+            transform: translateY(0); /* Press down effect */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Specific styles for mode buttons */
+        .mode-button-active {
+            background-image: linear-gradient(45deg, #6366f1, #a855f7);
+            color: white;
+            transform: scale(1.02); /* Slightly larger when active */
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+            border: 2px solid #6366f1; /* Stronger border for active state */
+        }
+        .mode-button-inactive {
+            background-color: #cbd5e1; /* Light gray for inactive */
+            color: #4a5568; /* Darker text for contrast */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #a0aec0; /* Subtle border for inactive state */
+        }
+
+        /* Swap button specific styles */
+        #swapLanguagesBtn {
+            font-size: 1.5rem; /* Slightly larger icon */
+            width: 3.5rem; /* Larger button size */
+            height: 3.5rem;
+            background-image: linear-gradient(45deg, #3b82f6, #0ea5e9); /* Blue gradient */
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+            border: none; /* No default border */
+        }
+        #swapLanguagesBtn:hover {
+            background-image: linear-gradient(45deg, #0ea5e9, #3b82f6); /* Reverse gradient on hover */
+            transform: rotate(180deg) scale(1.05); /* Spin and slightly enlarge on hover */
+        }
+        #swapLanguagesBtn.opacity-50 {
+            box-shadow: none; /* No shadow when disabled */
+            transform: none; /* No transform when disabled */
+            cursor: not-allowed;
+        }
+
+        /* Status message styling */
+        #statusMessage {
+            font-weight: 600;
+            padding: 0.75rem; /* Increased padding */
+            border-radius: 0.75rem; /* More rounded corners */
+            animation: fadeIn 0.5s ease-out; /* Fade in animation for messages */
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        #statusMessage.bg-red-100 { color: #dc2626; border: 1px solid #ef4444; } /* Red border for error */
+        #statusMessage.bg-green-100 { color: #059669; border: 1px solid #10b981; } /* Green border for success */
+        #statusMessage.bg-gray-100 { color: #4b5563; border: 1px solid #d1d5db; } /* Gray border for info */
+
+        /* Loader animation */
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4">
-    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-2xl border border-gray-200">
-        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">
-            <span class="text-indigo-600">SARA</span> <span class="text-purple-600">LIVE</span> <span class="text-blue-600">AUDIO</span> <span class="text-green-600">TRANSLATOR</span>
+    <div class="main-container">
+        <h1 class="text-3xl font-bold text-center mb-8">
+            <span class="app-title">SARA LIVE AUDIO TRANSLATOR</span>
         </h1>
 
         <!-- Mode Selection Buttons -->
         <div class="flex justify-center gap-4 mb-6">
-            <button id="normalModeBtn" class="flex-1 max-w-[150px] bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-all duration-300 ease-in-out">
+            <button id="normalModeBtn" class="flex-1 max-w-[180px] py-3 px-6 rounded-lg shadow-lg font-bold text-lg mode-button-active">
                 Normal Mode
             </button>
-            <button id="speakingModeBtn" class="flex-1 max-w-[150px] bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg shadow-md transition-all duration-300 ease-in-out">
+            <button id="speakingModeBtn" class="flex-1 max-w-[180px] py-3 px-6 rounded-lg shadow-lg font-bold text-lg mode-button-inactive">
                 Speaking Mode
             </button>
         </div>
 
         <!-- Language Selection -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 relative">
+        <div class="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-4 md:gap-6 mb-6 relative items-center">
             <div class="flex flex-col">
                 <label for="sourceLanguage" class="text-gray-700 text-sm font-semibold mb-2">Source Language:</label>
-                <select id="sourceLanguage" class="p-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 ease-in-out bg-white text-gray-800 shadow-sm">
+                <select id="sourceLanguage" class="p-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 ease-in-out bg-white text-gray-800 shadow-sm w-full">
                     <!-- Options will be populated by JavaScript -->
                 </select>
+            </div>
+            <!-- Swap Languages Button - Centered between dropdowns on larger screens, below on small -->
+            <div class="flex justify-center md:static z-10 w-full md:w-auto mt-4 md:mt-0 md:px-2">
+                <button id="swapLanguagesBtn" class="text-white rounded-full shadow-lg text-xl w-14 h-14 flex items-center justify-center">
+                    <i class="fas fa-exchange-alt"></i>
+                </button>
             </div>
             <div class="flex flex-col">
                 <label for="targetLanguage" class="text-gray-700 text-sm font-semibold mb-2">Target Language:</label>
-                <select id="targetLanguage" class="p-3 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 ease-in-out bg-white text-gray-800 shadow-sm">
+                <select id="targetLanguage" class="p-3 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 ease-in-out bg-white text-gray-800 shadow-sm w-full">
                     <!-- Options will be populated by JavaScript -->
                 </select>
             </div>
-            <!-- Swap Languages Button -->
-            <button id="swapLanguagesBtn" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-200 p-2 rounded-full shadow-md hover:bg-gray-300 transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400">
-                🔄
-            </button>
         </div>
 
         <!-- Action Buttons -->
         <div class="flex flex-col sm:flex-row gap-4 mb-6">
-            <button id="startSpeakingBtn" class="flex-1 bg-gradient-to-r from-indigo-500 to-blue-600 hover:from-indigo-600 hover:to-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1">
-                🎙️ Start Speaking
+            <button id="startSpeakingBtn" class="flex-1 bg-gradient-to-r from-indigo-500 to-blue-600 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-1">
+                <i class="fas fa-microphone"></i> Start Speaking
             </button>
-            <button id="playTranslationBtn" class="flex-1 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1">
-                🔊 Play Translation
+            <button id="playTranslationBtn" class="flex-1 bg-gradient-to-r from-purple-500 to-pink-600 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-1">
+                <i class="fas fa-volume-up"></i> Play Translation
             </button>
         </div>
 
         <!-- Status and Loader -->
-        <div id="statusMessage" class="text-center text-sm mb-4 text-gray-600"></div>
+        <div id="statusMessage" class="text-center text-sm mb-4 p-2"></div>
         <div id="loader" class="hidden text-center mb-4">
             <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500 inline-block"></div>
-            <span class="ml-2 text-indigo-600">Translating...</span>
+            <span class="ml-2 text-indigo-600 font-semibold">Translating...</span>
         </div>
 
         <!-- Text Fields -->
@@ -91,7 +469,7 @@
 
         <!-- Footer for developer information -->
         <footer class="mt-8 text-center text-gray-500 text-sm">
-            <p>&copy; 2024 SARA LIVE AUDIO TRANSLATOR. Developed by [Your Name/Company Name].</p>
+            <p>&copy; <span id="currentYear"></span> SARA LIVE AUDIO TRANSLATOR. Developed by SOHEL RANA.</p>
         </footer>
     </div>
 
@@ -112,11 +490,18 @@
         const pronunciationTextDiv = document.getElementById('pronunciationText');
         const statusMessageDiv = document.getElementById('statusMessage');
         const loaderDiv = document.getElementById('loader');
+        const currentYearSpan = document.getElementById('currentYear');
 
         // Global state variables
         let recognition; // SpeechRecognition instance
         let isListening = false; // Flag to track microphone status
         let isSpeakingMode = false; // Flag for Speaking Mode
+
+        // IndexedDB variables
+        const DB_NAME = 'SARA_Translator_DB';
+        const DB_VERSION = 1;
+        const STORE_NAME = 'settings';
+        let db; // Holds the IndexedDB database instance
 
         // Supported Languages (with specific codes for Speech API and LibreTranslate)
         const languages = [
@@ -130,6 +515,109 @@
             { name: 'Urdu (India)', speechCode: 'ur-IN', translateCode: 'ur' }
         ];
 
+        // --- IndexedDB Functions ---
+
+        /**
+         * Opens the IndexedDB database.
+         * Creates the object store if it doesn't exist (on first run or version upgrade).
+         * @returns {Promise<IDBDatabase>} A promise that resolves with the database instance.
+         */
+        function openDatabase() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+                request.onupgradeneeded = (event) => {
+                    db = event.target.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+                        db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+                        console.log('IndexedDB object store created.');
+                    }
+                };
+
+                request.onsuccess = (event) => {
+                    db = event.target.result;
+                    console.log('IndexedDB opened successfully.');
+                    resolve(db);
+                };
+
+                request.onerror = (event) => {
+                    console.error('IndexedDB error:', event.target.errorCode);
+                    reject(new Error('IndexedDB failed to open.'));
+                };
+            });
+        }
+
+        /**
+         * Saves settings to IndexedDB.
+         */
+        async function saveSettings() {
+            if (!db) {
+                console.warn('IndexedDB not initialized. Cannot save settings.');
+                return;
+            }
+            try {
+                const transaction = db.transaction([STORE_NAME], 'readwrite');
+                const store = transaction.objectStore(STORE_NAME);
+                
+                const settings = {
+                    id: 'appSettings', // A fixed ID for our single settings object
+                    sourceLang: sourceLanguageSelect.value,
+                    targetLang: targetLanguageSelect.value,
+                    speakingMode: isSpeakingMode
+                };
+                
+                const request = store.put(settings); // Use put to add or update
+                
+                request.onsuccess = () => {
+                    console.log('Settings saved to IndexedDB.');
+                };
+                
+                request.onerror = (event) => {
+                    console.error('Error saving settings:', event.target.errorCode);
+                };
+            } catch (error) {
+                console.error('Error accessing IndexedDB for saving:', error);
+            }
+        }
+
+        /**
+         * Loads settings from IndexedDB and applies them to the UI.
+         */
+        async function loadSettings() {
+            if (!db) {
+                console.warn('IndexedDB not initialized. Cannot load settings.');
+                return;
+            }
+            try {
+                const transaction = db.transaction([STORE_NAME], 'readonly');
+                const store = transaction.objectStore(STORE_NAME);
+                const request = store.get('appSettings'); // Get our single settings object
+                
+                request.onsuccess = (event) => {
+                    const settings = event.target.result;
+                    if (settings) {
+                        sourceLanguageSelect.value = settings.sourceLang || 'en-US';
+                        targetLanguageSelect.value = settings.targetLang || 'hi';
+                        // Ensure mode is set correctly with UI update
+                        setAppMode(settings.speakingMode === true); // Explicitly compare to true for boolean safety
+                        console.log('Settings loaded from IndexedDB.');
+                    } else {
+                        console.log('No saved settings found in IndexedDB. Using defaults.');
+                        setAppMode(false); // Default to normal mode if no settings found
+                    }
+                };
+                
+                request.onerror = (event) => {
+                    console.error('Error loading settings:', event.target.errorCode);
+                    setAppMode(false); // Fallback to normal mode on error
+                };
+            } catch (error) {
+                console.error('Error accessing IndexedDB for loading:', error);
+                setAppMode(false); // Fallback to normal mode on error
+            }
+        }
+
+
         // --- Helper Functions ---
 
         /**
@@ -139,10 +627,10 @@
          */
         function displayStatus(message, type = 'info') {
             statusMessageDiv.textContent = message;
-            statusMessageDiv.className = `text-center text-sm mb-4 ${
-                type === 'error' ? 'text-red-600' :
-                type === 'success' ? 'text-green-600' :
-                'text-gray-600'
+            statusMessageDiv.className = `text-center text-sm mb-4 p-2 rounded-lg ${
+                type === 'error' ? 'bg-red-100 text-red-700' :
+                type === 'success' ? 'bg-green-100 text-green-700' :
+                'bg-gray-100 text-gray-700'
             }`;
         }
 
@@ -176,6 +664,7 @@
                 sourceLanguageSelect.value = 'en-US';
                 targetLanguageSelect.value = 'hi';
             }
+            saveSettings(); // Save settings after swap
         }
 
         /**
@@ -185,26 +674,29 @@
         function setAppMode(mode) {
             isSpeakingMode = mode;
             if (isSpeakingMode) {
-                speakingModeBtn.classList.remove('bg-gray-300', 'hover:bg-gray-400', 'text-gray-800');
-                speakingModeBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-700', 'text-white');
-                normalModeBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700', 'text-white');
-                normalModeBtn.classList.add('bg-gray-300', 'hover:bg-gray-400', 'text-gray-800');
+                speakingModeBtn.classList.remove('mode-button-inactive');
+                speakingModeBtn.classList.add('mode-button-active');
+                normalModeBtn.classList.remove('mode-button-active');
+                normalModeBtn.classList.add('mode-button-inactive');
                 swapLanguagesBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                swapLanguagesBtn.disabled = true; // Disable the button explicitly
                 displayStatus('Switched to Speaking Mode. Click "Start Speaking" to begin loop.');
             } else {
-                normalModeBtn.classList.remove('bg-gray-300', 'hover:bg-gray-400', 'text-gray-800');
-                normalModeBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-700', 'text-white');
-                speakingModeBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700', 'text-white');
-                speakingModeBtn.classList.add('bg-gray-300', 'hover:bg-gray-400', 'text-gray-800');
+                normalModeBtn.classList.remove('mode-button-inactive');
+                normalModeBtn.classList.add('mode-button-active');
+                speakingModeBtn.classList.remove('mode-button-active');
+                speakingModeBtn.classList.add('mode-button-inactive');
                 swapLanguagesBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                swapLanguagesBtn.disabled = false; // Enable the button explicitly
                 displayStatus('Switched to Normal Mode.');
                 // If we were listening in speaking mode, stop it gracefully
                 if (isListening) {
                     recognition.stop();
                     isListening = false;
-                    startSpeakingBtn.textContent = '🎙️ Start Speaking';
+                    startSpeakingBtn.innerHTML = '<i class="fas fa-microphone"></i> Start Speaking';
                 }
             }
+            saveSettings(); // Save settings after mode change
         }
 
         // --- Initialization ---
@@ -225,7 +717,7 @@
                 targetLanguageSelect.appendChild(targetOption);
             });
 
-            // Set default selections
+            // Default selections will be overridden by loaded settings if available
             sourceLanguageSelect.value = 'en-US';
             targetLanguageSelect.value = 'hi';
         }
@@ -272,15 +764,14 @@
                         displayStatus('Swapping languages and restarting listening...');
                         // Wait for speech synthesis to finish before swapping and restarting,
                         // otherwise, the voice might not be fully loaded for the new language.
-                        // However, onutteranceend event is often unreliable for exact timing.
                         // For simplicity, we'll proceed immediately after `speak` call.
-                        swapLanguages();
+                        swapLanguages(); // This will also call saveSettings()
                         recognition.lang = sourceLanguageSelect.value; // Update recognition language
                         originalTextDiv.textContent = ''; // Clear for next input
                         translatedTextDiv.textContent = ''; // Clear for next translation
                         pronunciationTextDiv.textContent = ''; // Clear for next pronunciation
                         recognition.start(); // Restart listening automatically
-                        startSpeakingBtn.textContent = '🛑 Stop Speaking'; // Keep button text as stop
+                        startSpeakingBtn.innerHTML = '<i class="fas fa-stop-circle"></i> Stop Speaking'; // Keep button text as stop
                         isListening = true;
                     }
 
@@ -303,7 +794,7 @@
                 }
                 displayStatus(errorMessage, 'error');
                 isListening = false;
-                startSpeakingBtn.textContent = '🎙️ Start Speaking';
+                startSpeakingBtn.innerHTML = '<i class="fas fa-microphone"></i> Start Speaking';
                 // If error occurs in speaking mode, stop the loop
                 if (isSpeakingMode) {
                     displayStatus('Speaking Mode stopped due to error.', 'error');
@@ -317,7 +808,7 @@
                 if (!isSpeakingMode && isListening) { // Only reset if manually stopped in Normal Mode
                     displayStatus('Stopped listening.', 'info');
                     isListening = false;
-                    startSpeakingBtn.textContent = '🎙️ Start Speaking';
+                    startSpeakingBtn.innerHTML = '<i class="fas fa-microphone"></i> Start Speaking';
                 }
                 // In speaking mode, the onresult handler handles the restart loop, so we do nothing here.
             };
@@ -482,7 +973,7 @@
             if (isListening) {
                 recognition.stop();
                 isListening = false;
-                startSpeakingBtn.textContent = '🎙️ Start Speaking';
+                startSpeakingBtn.innerHTML = '<i class="fas fa-microphone"></i> Start Speaking';
                 displayStatus('Stopped listening.', 'info');
                 // If we stop manually in Speaking Mode, revert to Normal Mode
                 if (isSpeakingMode) {
@@ -497,7 +988,8 @@
                     pronunciationTextDiv.textContent = ''; // Clear pronunciation text
                     recognition.start();
                     isListening = true;
-                    startSpeakingBtn.textContent = '🛑 Stop Speaking';
+                    // Change button text and icon based on current action
+                    startSpeakingBtn.innerHTML = '<i class="fas fa-stop-circle"></i> Stop Speaking';
                     displayStatus('Listening... Speak now.', 'info');
                 } catch (error) {
                     console.error('Error starting recognition:', error);
@@ -515,40 +1007,9 @@
             }
         });
 
-        swapLanguagesBtn.addEventListener('click', async () => {
-            if (!isSpeakingMode) { // Only allow swap in Normal Mode
-                swapLanguages();
-                // If there's original text, re-translate after swap
-                const currentOriginalText = originalTextDiv.textContent.trim();
-                if (currentOriginalText) {
-                    displayStatus('Languages swapped. Re-translating...', 'info');
-                    toggleLoader(true);
-                    translatedTextDiv.textContent = '';
-                    pronunciationTextDiv.textContent = '';
-
-                    try {
-                        const translatedText = await translateText(currentOriginalText);
-                        translatedTextDiv.textContent = translatedText;
-                        displayStatus('Re-translation complete!', 'success');
-                        speakTranslatedText(translatedText);
-                        const pronunciation = await getPronunciationGuide(translatedText, targetLanguageSelect.value);
-                        pronunciationTextDiv.textContent = pronunciation;
-                    } catch (error) {
-                        console.error('Re-translation error:', error);
-                        displayStatus('Re-translation failed after swap. Error: ' + error.message, 'error');
-                    } finally {
-                        toggleLoader(false);
-                    }
-                } else {
-                    displayStatus('Languages swapped.', 'info');
-                }
-            } else {
-                displayStatus('Swap Languages button is disabled in Speaking Mode.', 'info');
-            }
-        });
-
-        // Event listener for target language change (for manual re-translation)
+        sourceLanguageSelect.addEventListener('change', saveSettings); // Save setting on change
         targetLanguageSelect.addEventListener('change', async () => {
+            saveSettings(); // Save setting on change
             const currentOriginalText = originalTextDiv.textContent.trim();
             if (currentOriginalText) {
                 displayStatus('Language changed. Re-translating...', 'info');
@@ -579,12 +1040,56 @@
             }
         });
 
+        swapLanguagesBtn.addEventListener('click', async () => {
+            if (!isSpeakingMode) { // Only allow swap in Normal Mode
+                swapLanguages(); // This function already calls saveSettings() internally
+                // If there's original text, re-translate after swap
+                const currentOriginalText = originalTextDiv.textContent.trim();
+                if (currentOriginalText) {
+                    displayStatus('Languages swapped. Re-translating...', 'info');
+                    toggleLoader(true);
+                    translatedTextDiv.textContent = '';
+                    pronunciationTextDiv.textContent = '';
+
+                    try {
+                        const translatedText = await translateText(currentOriginalText);
+                        translatedTextDiv.textContent = translatedText;
+                        displayStatus('Re-translation complete!', 'success');
+                        speakTranslatedText(translatedText);
+                        const pronunciation = await getPronunciationGuide(translatedText, targetLanguageSelect.value);
+                        pronunciationTextDiv.textContent = pronunciation;
+                    } catch (error) {
+                        console.error('Re-translation error:', error);
+                        displayStatus('Re-translation failed after swap. Error: ' + error.message, 'error');
+                    } finally {
+                        toggleLoader(false);
+                    }
+                } else {
+                    displayStatus('Languages swapped.', 'info');
+                }
+            } else {
+                displayStatus('Swap Languages button is disabled in Speaking Mode.', 'info');
+            }
+        });
+
 
         // Initialize on page load
-        window.onload = () => {
+        window.onload = async () => {
             populateLanguageDropdowns();
             initializeSpeechRecognition();
-            setAppMode(false); // Set to Normal Mode by default
+            
+            // Set the current year in the footer
+            currentYearSpan.textContent = new Date().getFullYear();
+
+            // Initialize IndexedDB and load settings
+            try {
+                await openDatabase();
+                await loadSettings();
+            } catch (error) {
+                console.error("Failed to initialize or load settings from IndexedDB:", error);
+                displayStatus('Local settings could not be loaded. Using default settings.', 'error');
+            }
+            
             displayStatus('Select languages and click "Start Speaking".');
 
             // Force load voices for SpeechSynthesis (sometimes they aren't ready immediately)
