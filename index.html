@@ -28,8 +28,18 @@
             <span class="text-indigo-600">SARA</span> <span class="text-purple-600">LIVE</span> <span class="text-blue-600">AUDIO</span> <span class="text-green-600">TRANSLATOR</span>
         </h1>
 
+        <!-- Mode Selection Buttons -->
+        <div class="flex justify-center gap-4 mb-6">
+            <button id="normalModeBtn" class="flex-1 max-w-[150px] bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-all duration-300 ease-in-out">
+                Normal Mode
+            </button>
+            <button id="speakingModeBtn" class="flex-1 max-w-[150px] bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg shadow-md transition-all duration-300 ease-in-out">
+                Speaking Mode
+            </button>
+        </div>
+
         <!-- Language Selection -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 relative">
             <div class="flex flex-col">
                 <label for="sourceLanguage" class="text-gray-700 text-sm font-semibold mb-2">Source Language:</label>
                 <select id="sourceLanguage" class="p-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 ease-in-out bg-white text-gray-800 shadow-sm">
@@ -42,6 +52,10 @@
                     <!-- Options will be populated by JavaScript -->
                 </select>
             </div>
+            <!-- Swap Languages Button -->
+            <button id="swapLanguagesBtn" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-200 p-2 rounded-full shadow-md hover:bg-gray-300 transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400">
+                🔄
+            </button>
         </div>
 
         <!-- Action Buttons -->
@@ -77,7 +91,7 @@
 
         <!-- Footer for developer information -->
         <footer class="mt-8 text-center text-gray-500 text-sm">
-            <p>&copy; 2025 SARA LIVE AUDIO TRANSLATOR. Developed by SOHEL RANA.</p>
+            <p>&copy; 2024 SARA LIVE AUDIO TRANSLATOR. Developed by [Your Name/Company Name].</p>
         </footer>
     </div>
 
@@ -86,15 +100,23 @@
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
         // UI Element References
+        const normalModeBtn = document.getElementById('normalModeBtn');
+        const speakingModeBtn = document.getElementById('speakingModeBtn');
         const sourceLanguageSelect = document.getElementById('sourceLanguage');
         const targetLanguageSelect = document.getElementById('targetLanguage');
+        const swapLanguagesBtn = document.getElementById('swapLanguagesBtn');
         const startSpeakingBtn = document.getElementById('startSpeakingBtn');
         const playTranslationBtn = document.getElementById('playTranslationBtn');
         const originalTextDiv = document.getElementById('originalText');
         const translatedTextDiv = document.getElementById('translatedText');
-        const pronunciationTextDiv = document.getElementById('pronunciationText'); // New element
+        const pronunciationTextDiv = document.getElementById('pronunciationText');
         const statusMessageDiv = document.getElementById('statusMessage');
         const loaderDiv = document.getElementById('loader');
+
+        // Global state variables
+        let recognition; // SpeechRecognition instance
+        let isListening = false; // Flag to track microphone status
+        let isSpeakingMode = false; // Flag for Speaking Mode
 
         // Supported Languages (with specific codes for Speech API and LibreTranslate)
         const languages = [
@@ -107,9 +129,6 @@
             { name: 'Malayalam (India)', speechCode: 'ml-IN', translateCode: 'ml' },
             { name: 'Urdu (India)', speechCode: 'ur-IN', translateCode: 'ur' }
         ];
-
-        let recognition; // SpeechRecognition instance
-        let isListening = false; // Flag to track microphone status
 
         // --- Helper Functions ---
 
@@ -135,6 +154,59 @@
             loaderDiv.classList.toggle('hidden', !show);
         }
 
+        /**
+         * Swaps the selected source and target languages in the dropdowns.
+         */
+        function swapLanguages() {
+            const currentSourceSpeechCode = sourceLanguageSelect.value;
+            const currentTargetTranslateCode = targetLanguageSelect.value;
+
+            // Find the language objects based on current values
+            const currentSourceLangObj = languages.find(l => l.speechCode === currentSourceSpeechCode);
+            const currentTargetLangObj = languages.find(l => l.translateCode === currentTargetTranslateCode);
+
+            if (currentSourceLangObj && currentTargetLangObj) {
+                // Set source to the target's speechCode
+                sourceLanguageSelect.value = currentTargetLangObj.speechCode;
+                // Set target to the source's translateCode
+                targetLanguageSelect.value = currentSourceLangObj.translateCode;
+            } else {
+                console.warn("Could not find language objects for swapping. Using defaults.");
+                // Fallback to defaults if for some reason a selected language isn't found
+                sourceLanguageSelect.value = 'en-US';
+                targetLanguageSelect.value = 'hi';
+            }
+        }
+
+        /**
+         * Sets the application mode (Normal or Speaking).
+         * @param {boolean} mode - true for Speaking Mode, false for Normal Mode.
+         */
+        function setAppMode(mode) {
+            isSpeakingMode = mode;
+            if (isSpeakingMode) {
+                speakingModeBtn.classList.remove('bg-gray-300', 'hover:bg-gray-400', 'text-gray-800');
+                speakingModeBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-700', 'text-white');
+                normalModeBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700', 'text-white');
+                normalModeBtn.classList.add('bg-gray-300', 'hover:bg-gray-400', 'text-gray-800');
+                swapLanguagesBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                displayStatus('Switched to Speaking Mode. Click "Start Speaking" to begin loop.');
+            } else {
+                normalModeBtn.classList.remove('bg-gray-300', 'hover:bg-gray-400', 'text-gray-800');
+                normalModeBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-700', 'text-white');
+                speakingModeBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700', 'text-white');
+                speakingModeBtn.classList.add('bg-gray-300', 'hover:bg-gray-400', 'text-gray-800');
+                swapLanguagesBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                displayStatus('Switched to Normal Mode.');
+                // If we were listening in speaking mode, stop it gracefully
+                if (isListening) {
+                    recognition.stop();
+                    isListening = false;
+                    startSpeakingBtn.textContent = '🎙️ Start Speaking';
+                }
+            }
+        }
+
         // --- Initialization ---
 
         /**
@@ -143,19 +215,19 @@
         function populateLanguageDropdowns() {
             languages.forEach(lang => {
                 const sourceOption = document.createElement('option');
-                sourceOption.value = lang.speechCode; // Use speechCode for source dropdown value
+                sourceOption.value = lang.speechCode;
                 sourceOption.textContent = lang.name;
                 sourceLanguageSelect.appendChild(sourceOption);
 
                 const targetOption = document.createElement('option');
-                targetOption.value = lang.translateCode; // Use translateCode for target dropdown value (for LibreTranslate)
+                targetOption.value = lang.translateCode;
                 targetOption.textContent = lang.name;
                 targetLanguageSelect.appendChild(targetOption);
             });
 
             // Set default selections
             sourceLanguageSelect.value = 'en-US';
-            targetLanguageSelect.value = 'hi'; // Default target to Hindi
+            targetLanguageSelect.value = 'hi';
         }
 
         /**
@@ -169,8 +241,8 @@
             }
 
             recognition = new SpeechRecognition();
-            recognition.continuous = false; // Set to true for continuous listening
-            recognition.interimResults = false; // Get final results only
+            recognition.continuous = false; // We manage continuity manually for the loop
+            recognition.interimResults = false;
 
             // Event handler when speech is recognized
             recognition.onresult = async (event) => {
@@ -188,12 +260,29 @@
                     translatedTextDiv.textContent = translatedText;
                     displayStatus('Translation complete!', 'success');
                     
-                    // Automatically play translation after successful translation
+                    // Play translated text
                     speakTranslatedText(translatedText);
 
                     // Get and display pronunciation guide
                     const pronunciation = await getPronunciationGuide(translatedText, targetLanguageSelect.value);
                     pronunciationTextDiv.textContent = pronunciation;
+
+                    // Speaking Mode Auto-Loop
+                    if (isSpeakingMode) {
+                        displayStatus('Swapping languages and restarting listening...');
+                        // Wait for speech synthesis to finish before swapping and restarting,
+                        // otherwise, the voice might not be fully loaded for the new language.
+                        // However, onutteranceend event is often unreliable for exact timing.
+                        // For simplicity, we'll proceed immediately after `speak` call.
+                        swapLanguages();
+                        recognition.lang = sourceLanguageSelect.value; // Update recognition language
+                        originalTextDiv.textContent = ''; // Clear for next input
+                        translatedTextDiv.textContent = ''; // Clear for next translation
+                        pronunciationTextDiv.textContent = ''; // Clear for next pronunciation
+                        recognition.start(); // Restart listening automatically
+                        startSpeakingBtn.textContent = '🛑 Stop Speaking'; // Keep button text as stop
+                        isListening = true;
+                    }
 
                 } catch (error) {
                     console.error('Translation error:', error);
@@ -215,17 +304,22 @@
                 displayStatus(errorMessage, 'error');
                 isListening = false;
                 startSpeakingBtn.textContent = '🎙️ Start Speaking';
+                // If error occurs in speaking mode, stop the loop
+                if (isSpeakingMode) {
+                    displayStatus('Speaking Mode stopped due to error.', 'error');
+                    setAppMode(false); // Revert to normal mode
+                }
             };
 
             // Event handler when recognition ends
             recognition.onend = () => {
-                if (isListening) { // If it ended naturally, but we want continuous
-                    // We could restart here if continuous was true and we wanted to always listen
-                } else {
+                // If not in speaking mode or if an error already stopped it, reset state
+                if (!isSpeakingMode && isListening) { // Only reset if manually stopped in Normal Mode
                     displayStatus('Stopped listening.', 'info');
+                    isListening = false;
+                    startSpeakingBtn.textContent = '🎙️ Start Speaking';
                 }
-                isListening = false;
-                startSpeakingBtn.textContent = '🎙️ Start Speaking';
+                // In speaking mode, the onresult handler handles the restart loop, so we do nothing here.
             };
         }
 
@@ -244,8 +338,8 @@
                 throw new Error("Invalid source or target language selected.");
             }
 
-            const sourceLangName = sourceLangObj.name.split(' (')[0]; // e.g., "Bengali" from "Bengali (India)"
-            const targetLangName = targetLangObj.name.split(' (')[0]; // e.g., "Tamil" from "Tamil (India)"
+            const sourceLangName = sourceLangObj.name.split(' (')[0];
+            const targetLangName = targetLangObj.name.split(' (')[0];
 
             const prompt = `Translate the following text from ${sourceLangName} to ${targetLangName}: "${text}". Provide only the translated text, without any additional notes or conversational filler.`;
 
@@ -253,7 +347,7 @@
                 let chatHistory = [];
                 chatHistory.push({ role: "user", parts: [{ text: prompt }] });
                 const payload = { contents: chatHistory };
-                const apiKey = "AIzaSyBUkp74PiufhNWc_XLgx_OV-LzK81K7L-U"; // Canvas will automatically provide the API key here
+                const apiKey = "AIzaSyBUkp74PiufhNWc_XLgx_OV-LzK81K7L-U";
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
                 const response = await fetch(apiUrl, {
@@ -297,7 +391,7 @@
                 return "Pronunciation guide not available for this language.";
             }
 
-            const targetLangName = targetLangObj.name.split(' (')[0]; // e.g., "Hindi"
+            const targetLangName = targetLangObj.name.split(' (')[0];
 
             const prompt = `Provide a simple, easy-to-read English pronunciation guide (using common English letters, not IPA symbols) for the following ${targetLangName} text: "${text}". Only provide the pronunciation guide.`;
 
@@ -305,7 +399,7 @@
                 let chatHistory = [];
                 chatHistory.push({ role: "user", parts: [{ text: prompt }] });
                 const payload = { contents: chatHistory };
-                const apiKey = "AIzaSyBUkp74PiufhNWc_XLgx_OV-LzK81K7L-U"; // Canvas will automatically provide the API key here
+                const apiKey = "AIzaSyBUkp74PiufhNWc_XLgx_OV-LzK81K7L-U";
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
                 const response = await fetch(apiUrl, {
@@ -327,7 +421,7 @@
                     result.candidates[0].content.parts.length > 0) {
                     return result.candidates[0].content.parts[0].text;
                 } else {
-                    return "Pronunciation guide not available."; // Fallback message
+                    return "Pronunciation guide not available.";
                 }
             } catch (error) {
                 console.error('Error during Gemini API pronunciation guide generation:', error);
@@ -355,9 +449,9 @@
             const utterance = new SpeechSynthesisUtterance(text);
             const selectedLang = languages.find(lang => lang.translateCode === targetLanguageSelect.value);
             if (selectedLang) {
-                 utterance.lang = selectedLang.speechCode; // Use the speechCode for synthesis
+                 utterance.lang = selectedLang.speechCode;
             } else {
-                 utterance.lang = targetLanguageSelect.value; // Fallback to translateCode if speechCode not found
+                 utterance.lang = targetLanguageSelect.value;
             }
 
             // Ensure a voice is available for the selected language
@@ -380,12 +474,20 @@
 
         // --- Event Listeners ---
 
+        // Mode selection listeners
+        normalModeBtn.addEventListener('click', () => setAppMode(false));
+        speakingModeBtn.addEventListener('click', () => setAppMode(true));
+
         startSpeakingBtn.addEventListener('click', () => {
             if (isListening) {
                 recognition.stop();
                 isListening = false;
                 startSpeakingBtn.textContent = '🎙️ Start Speaking';
                 displayStatus('Stopped listening.', 'info');
+                // If we stop manually in Speaking Mode, revert to Normal Mode
+                if (isSpeakingMode) {
+                    setAppMode(false);
+                }
             } else {
                 try {
                     // Update the recognition language based on selected source
@@ -399,7 +501,7 @@
                     displayStatus('Listening... Speak now.', 'info');
                 } catch (error) {
                     console.error('Error starting recognition:', error);
-                    displayStatus('Failed to start microphone. Please ensure permissions is granted.', 'error');
+                    displayStatus('Failed to start microphone. Please ensure permissions are granted.', 'error');
                 }
             }
         });
@@ -413,7 +515,39 @@
             }
         });
 
-        // Event listener for target language change
+        swapLanguagesBtn.addEventListener('click', async () => {
+            if (!isSpeakingMode) { // Only allow swap in Normal Mode
+                swapLanguages();
+                // If there's original text, re-translate after swap
+                const currentOriginalText = originalTextDiv.textContent.trim();
+                if (currentOriginalText) {
+                    displayStatus('Languages swapped. Re-translating...', 'info');
+                    toggleLoader(true);
+                    translatedTextDiv.textContent = '';
+                    pronunciationTextDiv.textContent = '';
+
+                    try {
+                        const translatedText = await translateText(currentOriginalText);
+                        translatedTextDiv.textContent = translatedText;
+                        displayStatus('Re-translation complete!', 'success');
+                        speakTranslatedText(translatedText);
+                        const pronunciation = await getPronunciationGuide(translatedText, targetLanguageSelect.value);
+                        pronunciationTextDiv.textContent = pronunciation;
+                    } catch (error) {
+                        console.error('Re-translation error:', error);
+                        displayStatus('Re-translation failed after swap. Error: ' + error.message, 'error');
+                    } finally {
+                        toggleLoader(false);
+                    }
+                } else {
+                    displayStatus('Languages swapped.', 'info');
+                }
+            } else {
+                displayStatus('Swap Languages button is disabled in Speaking Mode.', 'info');
+            }
+        });
+
+        // Event listener for target language change (for manual re-translation)
         targetLanguageSelect.addEventListener('change', async () => {
             const currentOriginalText = originalTextDiv.textContent.trim();
             if (currentOriginalText) {
@@ -450,6 +584,7 @@
         window.onload = () => {
             populateLanguageDropdowns();
             initializeSpeechRecognition();
+            setAppMode(false); // Set to Normal Mode by default
             displayStatus('Select languages and click "Start Speaking".');
 
             // Force load voices for SpeechSynthesis (sometimes they aren't ready immediately)
