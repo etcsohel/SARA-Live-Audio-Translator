@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About SARA LIVE AUDIO TRANSLATOR - Real-time Voice Translation</title>
+
+    <!-- Favicon - Ensure this path is correct if favicon.png is in the same directory -->
+    <link rel="icon" type="image/png" href="favicon.png" />
+
+    <!-- SEO Meta Tags for About Page -->
+    <meta name="description" content="Learn more about SARA Live Audio Translator, a real-time voice translation web app developed by SOHEL RANA, designed for seamless multi-language communication. Discover its mission, detailed features, and the developer's vision.">
+    <meta name="keywords" content="about SARA translator, voice translator info, SOHEL RANA, real-time translation app, language technology, mission statement, features explained, developer biography, contact information">
+    <link rel="canonical" href="[YOUR_CANONICAL_URL_HERE]/about.html" /> <!-- IMPORTANT: Replace with your deployed URL -->
+
+    <!-- Open Graph / Twitter Cards (similar to main page, adjusted for about content) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="[YOUR_CANONICAL_URL_HERE]/about.html">
+    <meta property="og:title" content="About SARA LIVE AUDIO TRANSLATOR - Deep Dive into Real-time Voice Translation">
+    <meta property="og:description" content="Discover SARA Live Audio Translator, a powerful tool for instant voice translation across multiple languages, developed by SOHEL RANA. Explore its features, mission, and the story behind the app.">
+    <meta property="og:image" content="[YOUR_CANONICAL_URL_HERE]/favicon.png">
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="[YOUR_CANONICAL_URL_HERE]/about.html">
+    <meta property="twitter:title" content="About SARA LIVE AUDIO TRANSLATOR - Deep Dive into Real-time Voice Translation">
+    <meta property="twitter:description" content="Discover SARA Live Audio Translator, a powerful tool for instant voice translation across multiple languages, developed by SOHEL RANA. Explore its features, mission, and the story behind the app.">
+    <meta property="twitter:image" content="[YOUR_CANONICAL_URL_HERE]/favicon.png">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome CDN for icons (though may not be directly used on this page, good for consistency) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" xintegrity="sha512-Fo3rlroqV+Gf40F45QWf9sWnSg8P9Qh2Gk3b6S6fD/W2nE5d1g4o1+Q7L+u/P7sA3VlX4t+k/zQ2O5p6oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Reusing main app's body styles for consistency */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #e0f2f7 0%, #cce7f5 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        /* Reusing main app's container styles */
+        .main-container {
+            background-color: #ffffff;
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border: 1px solid #e2e8f0;
+            width: 100%;
+            max-width: 768px; /* Slightly wider for more content */
+        }
+
+        /* Reusing app-title styling */
+        .app-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            background-image: linear-gradient(45deg, #6366f1, #a855f7, #3b82f6, #22c55e);
+            background-size: 200% 200%;
+            animation: gradient-shift 5s ease infinite;
+            display: inline-block;
+        }
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Specific styles for about page content */
+        .about-section {
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #e2e8f0; /* Subtle separator */
+        }
+        .about-section:last-of-type {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .about-section h2 {
+            font-size: 1.875rem; /* Larger heading */
+            font-weight: 700;
+            color: #2d3748; /* Darker gray for headings */
+            margin-bottom: 1.25rem;
+            text-align: center;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        .about-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #a855f7, #6366f1); /* Gradient underline */
+            border-radius: 2px;
+        }
+        .about-section p, .about-section ul {
+            color: #4a5568; /* Slightly darker text for readability */
+            line-height: 1.8; /* Increased line height */
+            margin-bottom: 1rem;
+            text-align: justify; /* Justify text for a professional look */
+        }
+        .about-section ul {
+            list-style: disc;
+            margin-left: 1.5rem;
+            padding-left: 0.5rem;
+        }
+        .about-section li {
+            margin-bottom: 0.75rem;
+        }
+        .developer-info p {
+            font-weight: 500;
+            text-align: center;
+        }
+        .developer-info a {
+            color: #3b82f6;
+            text-decoration: none;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+        .developer-info a:hover {
+            color: #6366f1;
+            text-decoration: underline;
+            transform: translateY(-1px);
+        }
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .social-links a {
+            font-size: 1.8rem; /* Larger social icons */
+            color: #6366f1; /* Consistent color for icons */
+        }
+        .social-links a:hover {
+            color: #a855f7;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div class="main-container">
+        <h1 class="text-3xl font-bold text-center mb-8">
+            <span class="app-title">About SARA LIVE AUDIO TRANSLATOR</span>
+        </h1>
+
+        <div class="about-section">
+            <h2 class="text-2xl">Our Mission: Bridging Linguistic Divides</h2>
+            <p>
+                In an increasingly interconnected world, language should be a bridge, not a barrier. SARA Live Audio Translator was born from a deep-seated belief that effortless, real-time voice translation can revolutionize how people from different linguistic backgrounds interact. Our mission is to empower individuals worldwide by providing an intuitive, powerful, and accessible tool that facilitates spontaneous communication and fosters genuine understanding. We aim to break down the complexities of language differences, making every conversation seamless and natural.
+            </p>
+            <p>
+                Whether for travel, business, learning, or simply connecting with others, SARA is committed to delivering a translation experience that feels as natural as speaking in your native tongue.
+            </p>
+        </div>
+
+        <div class="about-section">
+            <h2 class="text-2xl">Key Features: Unlocking Global Communication</h2>
+            <ul class="text-left">
+                <li>
+                    <strong>Real-time Voice Translation:</strong> Experience instant conversion of spoken words from your source language to the target language. Our advanced integration with powerful AI models ensures high accuracy and speed, allowing for fluid conversations without significant delays. Simply speak into your device's microphone, and see and hear the translation almost immediately.
+                </li>
+                <li>
+                    <strong>Extensive Language Support:</strong> SARA Live Audio Translator proudly supports over 8 widely spoken languages. This includes:
+                    <ul>
+                        <li><strong>English (US):</strong> For broad international communication.</li>
+                        <li><strong>Tamil (India):</strong> Catering to the vibrant Tamil-speaking community.</li>
+                        <li><strong>Telugu (India):</strong> Providing support for Telugu speakers.</li>
+                        <li><strong>Hindi (India):</strong> Crucial for effective communication across large parts of India.</li>
+                        <li><strong>Bengali (India):</strong> Supporting Bengali speakers with accurate translations.</li>
+                        <li><strong>Kannada (India):</strong> Facilitating communication for Kannada speakers.</li>
+                        <li><strong>Malayalam (India):</strong> Enabling smooth interactions for Malayalam speakers.</li>
+                        <li><strong>Urdu (India):</strong> Addressing the needs of Urdu-speaking users.</li>
+                    </ul>
+                    Our aim is to continuously expand this list to serve even more communities globally.
+                </li>
+                <li>
+                    <strong>Pronunciation Guide:</strong> Beyond just translation, SARA helps you learn and speak correctly. For every translated text, we provide a clear, easy-to-read English phonetic guide. This feature is invaluable for language learners or anyone needing to articulate foreign words accurately.
+                </li>
+                <li>
+                    <strong>Normal Mode:</strong> This default mode offers comprehensive manual control over your translation sessions. You can initiate and stop speech recognition, play translations on demand, and manually swap source and target languages as needed.
+                </li>
+                <li>
+                    <strong>Speaking Mode (Auto-Conversation):</strong> An innovative feature designed for dynamic, back-and-forth conversations. Once activated, after a translation is processed and spoken, the application automatically swaps the source and target languages and restarts listening. This creates a continuous loop, making multi-lingual dialogues remarkably fluid and natural, as if SARA is acting as your personal interpreter.
+                </li>
+                <li>
+                    <strong>Local Settings Storage (IndexedDB):</strong> For your convenience, SARA automatically saves your last-used source language, target language, and chosen mode (Normal/Speaking) directly in your browser. This ensures that your preferences are remembered across sessions, providing a consistent and personalized user experience without needing to reconfigure every time.
+                </li>
+                <li>
+                    <strong>Responsive Design:</strong> Crafted with a mobile-first approach, SARA's interface is fully optimized for seamless usability and aesthetic appeal across all device types – from large desktop monitors to tablets and smartphones. Enjoy a beautiful and functional experience, regardless of how you access the application.
+                </li>
+            </ul>
+        </div>
+
+        <div class="about-section developer-info">
+            <h2 class="text-2xl">About the Developer: SOHEL RANA</h2>
+            <p class="mb-4">
+                SARA Live Audio Translator is the brainchild and passion project of <strong>SOHEL RANA</strong>.
+            </p>
+            <p class="mb-4">
+                SOHEL is a dedicated and innovative Software Developer with a profound interest in leveraging technology to solve everyday problems and enhance human interaction. With a solid foundation in web development and a keen eye for user experience, SOHEL embarked on this project to contribute to a world where language is never a barrier to connection.
+            </p>
+            <p class="mb-4">
+                This application represents not just a technical achievement, but a commitment to making communication more inclusive and accessible globally. SOHEL's vision for SARA is to continuously evolve, embracing new advancements in AI and language processing to offer an even richer and more natural translation experience.
+            </p>
+            <p class="mb-4">
+                Thank you for using SARA Live Audio Translator. Your feedback is invaluable in shaping its future.
+            </p>
+
+            <h3 class="text-xl font-semibold text-gray-700 mt-6 mb-3 text-center">Connect with SOHEL RANA:</h3>
+            <div class="social-links">
+                <a href="https://example.com/sohel-rana-profile" target="_blank" rel="noopener noreferrer" title="SOHEL RANA's Portfolio/Website">
+                    <i class="fas fa-link"></i>
+                </a>
+                <a href="https://linkedin.com/in/sohel-rana" target="_blank" rel="noopener noreferrer" title="SOHEL RANA's LinkedIn Profile">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://github.com/sohel-rana-dev" target="_blank" rel="noopener noreferrer" title="SOHEL RANA's GitHub Profile">
+                    <i class="fab fa-github"></i>
+                </a>
+                <!-- You can add more social links here -->
+            </div>
+            <p class="text-sm text-gray-500 mt-4 text-center">(Please replace placeholder URLs with actual links to SOHEL RANA's professional profiles)</p>
+        </div>
+
+        <div class="text-center mt-8">
+            <a href="index.html" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all duration-300 ease-in-out transform hover:-translate-y-1 inline-flex items-center">
+                <i class="fas fa-home mr-2"></i> Back to Translator
+            </a>
+        </div>
+
+        <!-- Footer for developer information -->
+        <footer class="mt-8 text-center text-gray-500 text-sm">
+            <p>&copy; <span id="currentYear"></span> SARA LIVE AUDIO TRANSLATOR. Developed by SOHEL RANA.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Set the current year in the footer
+        window.onload = () => {
+            const currentYearSpan = document.getElementById('currentYear');
+            if (currentYearSpan) {
+                currentYearSpan.textContent = new Date().getFullYear();
+            }
+        };
+    </script>
+</body>
+</html>
